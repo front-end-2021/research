@@ -30,19 +30,24 @@
 3. connect to Redis:
 	```redis-cli```
 
-## Run project
+## Init project
 1. Install node packages
 	```
 	npm install
 	```
-2. Start Redis server
+
+## Run project
+1. Start Redis server
 	```
 	redis-server
 	```
-3. Run project on development mode
+2. Run project on development mode
 	```
 	npm run dev
 	```
+3. Call api: 
+	* localhost:8001/photos/
+	* localhost:8001/photos/{id}
 
 ## Presentation
 ![Present](https://raw.githubusercontent.com/front-end-2021/research/main/redis/assets/RunRedisServer.jpg)

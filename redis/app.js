@@ -1,5 +1,4 @@
 const express = require('express')
-const axios = require('axios')
 const cors = require('cors')
 
 const app = express();
@@ -9,14 +8,14 @@ app.use(cors())
 const cache = require('./cacheRedis')
 
 app.get('/photos', async (req, res) => {
-    const data = await cache.getPhotos(req.query);
+    const albumId = req.query.albumId
+    const data = await cache.getPhotos(albumId);
     res.json(data)
 })
 
-const API_URL = `https://jsonplaceholder.typicode.com/photos`
 app.get('/photos/:id', async(req, res) => {
     const id = req.params.id
-    const {data} = await axios.get(`${API_URL}/${id}`)
+    const data = await cache.getPhoto(id)
     res.json(data)
 })
 

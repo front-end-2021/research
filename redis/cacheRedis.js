@@ -11,21 +11,35 @@ const DEFAULT_EXPIRATION = 3600
 const KEY_PHOTOS = 'photos'
 
 const API_URL = `https://jsonplaceholder.typicode.com/photos`
-async function getPhotos(query) {
+async function getPhotos(albumId) {
     const response = await client.get(KEY_PHOTOS)
     if(response)
         return {
             Source: 'cache', Photos: JSON.parse(response)
         }
     
-    const albumId = query.albumId
     const {data} = await axios.get(API_URL, {params : {albumId}})
     client.setEx(KEY_PHOTOS, DEFAULT_EXPIRATION, JSON.stringify(data))
     return {
         Source: 'api', Photos: data
     }
 }
+async function getPhoto(id) {
+    const response = await client.get(KEY_PHOTOS)
+    if(response) {
+        const photos = JSON.parse(response)
+        const photo = photos.find(p => p.id == id)
+        return {
+            Source: 'cache', Photo: photo
+        }
+    }
+    const {data} = await axios.get(`${API_URL}/${id}`)
+    return {
+        Source: 'api', Photo: data
+    }
+}
 
 module.exports = {
-    getPhotos: getPhotos
+    getPhotos: getPhotos,
+    getPhoto: getPhoto
 }
